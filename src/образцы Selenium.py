@@ -1,3 +1,6 @@
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+
 #Поиск текста внутри обределенного блока и клик по нему:
     driver.find_element(By.XPATH,"//div[@class='more' and text()='More']").click()
     
@@ -7,7 +10,7 @@
 
 #Поиск всех элементов с определенным признаком:
     links = driver.find_elements(By.XPATH, "//div[contains(@class, 'name')]")
-    ссылк содержит в адресе '/p/'
+    #ссылк содержит в адресе '/p/'
     links = driver.find_elements(By.XPATH, "//a[contains(@href, '/p/')]")
 
 #Получение данных из массива объектов:
@@ -24,10 +27,10 @@
        print element.size
 
 #Замена переменной в запросе:	   
-	varname = 'my string'
-	driver.find_element_by_xpath("//*[contains(text(), '%s')]" % varname)  # option 1
-	driver.find_element_by_xpath("//*[contains(text(), '{0}')]".format(varname))  # option 2
-	
-	mystrings = ['my first string','my second string','my third string']
-	for x in mystrings:
-		driver.find_element_by_xpath("//*[contains(text(), '%s')]" % x)
+varname = 'my string'
+driver.find_element_by_xpath("//*[contains(text(), '%s')]" % varname)  # option 1
+driver.find_element_by_xpath("//*[contains(text(), '{0}')]".format(varname))  # option 2
+
+mystrings = ['my first string','my second string','my third string']
+for x in mystrings:
+   driver.find_element_by_xpath("//*[contains(text(), '%s')]" % x)
