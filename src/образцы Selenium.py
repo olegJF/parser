@@ -10,8 +10,10 @@ from selenium.webdriver.common.by import By
 
 #Поиск всех элементов с определенным признаком:
     links = driver.find_elements(By.XPATH, "//div[contains(@class, 'name')]")
-    #ссылк содержит в адресе '/p/'
+    #ссылка содержит в адресе '/p/'
     links = driver.find_elements(By.XPATH, "//a[contains(@href, '/p/')]")
+    # Глубина в 4 элемента и с исключением определенных классов
+    driver.find_elements(By.XPATH, "//div[contains(@class, 'detail-row')]/div[contains(@class, 'meta')]/div[not(contains(@class, 'right-col'))]/h4")
 
 #Получение данных из массива объектов:
     for link in links:
