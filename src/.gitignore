@@ -1,6 +1,14 @@
 /selenium/
 *.log
-*.html
 *.txt
 
 *. txt
+/chapter.html
+/colourl.html
+/drv.html
+/finviz.html
+/man.html
+/names.csv
+/output.html
+/output1.html
+/output_ebay.html
