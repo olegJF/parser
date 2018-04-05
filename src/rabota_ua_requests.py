@@ -44,25 +44,31 @@ for url in urls:
     if req.status_code == 200:
         bsObj = BS(req.content, "html.parser")
         table = bsObj.find('table', attrs={'id':'content_vacancyList_gridList'})
-        list_of_tr = table.find_all('tr', attrs={'id':True})
-        for tr in list_of_tr:
-            company = ''
-            h3 = tr.find('h3')
-            title = h3.a.text
-            logo = tr.find('p', attrs={'class':'f-vacancylist-companyname'}).a.text
-            if logo:
-                company = logo
-            posted = ''
-            when_posted = tr.find('p', attrs={'class':'f-vacancylist-agotime'})
-            if when_posted:
-                posted = when_posted.text
-            descr = tr.find('p', attrs={'class':'f-vacancylist-shortdescr'}).text
-            title_list = title.split(' ')
-            if not any(word in stop_list for word in title_list):
-                jobs.append({'href': a_href+h3.a['href'], 
-                                'title': title+' , '+posted,
-                                'descript':'<h4>'+company+'</h4>'+ str(descr)
-                                    })
+        if table:
+            list_of_tr = table.find_all('tr', attrs={'id':True})
+            for tr in list_of_tr:
+                company = 'No name of company'
+                h3 = tr.find('h3')
+                title = h3.a.text
+                logo = tr.find('p', attrs={'class':'f-vacancylist-companyname'})
+                if logo:
+                    company = logo.a.text
+                posted = ''
+                when_posted = tr.find('p', attrs={'class':'f-vacancylist-agotime'})
+                if when_posted:
+                    posted = when_posted.text
+                descr = tr.find('p', attrs={'class':'f-vacancylist-shortdescr'}).text
+                title_list = title.split(' ')
+                if not any(word in stop_list for word in title_list):
+                    jobs.append({'href': a_href+h3.a['href'], 
+                                    'title': title+' , '+posted,
+                                    'descript':'<h4>'+company+'</h4>'+ str(descr)
+                                        })
+        else:
+            jobs.append({'href': url, 
+                            'title': 'rabota.ua - The page is empty',
+                            'descript': ''
+                                })
     else:
         jobs.append({'href': url, 
                         'title': 'rabota.ua - Page do not response',
@@ -72,7 +78,7 @@ for url in urls:
 content = '<h2> Rabota.ua</h2>'
 for job in jobs:
     content += '<a href="{href}" target="_blank">{title}</a><br/><p>{descript}</p><br/>'.format(**job)
-    content += '--------------<br/>'
+    content += '--------------<br/><br/>'
 data = template + content + end
 handle = codecs.open('rabotas.html', "w", 'utf-8')
 handle.write(str(data))
