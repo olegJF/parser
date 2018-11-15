@@ -7,6 +7,15 @@ import datetime
 from bs4 import BeautifulSoup as BS
 from elasticsearch import Elasticsearch
 from random import randint
+import logging
+
+
+logger = logging.getLogger(__name__) 
+logger.setLevel(logging.INFO)
+file_handler = logging.FileHandler("parsing.log")
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
 
 domain = 'http://forum.dneprcity.net/'
 
@@ -43,8 +52,8 @@ def parse_():
     #     q = es.search(index='forums', body={"query": {"match": {"domain": domain}},
     #                                         "sort": [{ "foundtime": "desc" }]})
     # except:
-    #     print('ElasticSearch is not available!')
-    #     pass
+    #     logger.error('ElasticSearch is not available!')
+    #     
     # else:
     #     total = q['hits']['total']
     #     if total > 0:
@@ -62,7 +71,11 @@ def parse_():
         topics_url = []
         if resp.status_code == 200:
             soup = BS(resp.content, "html.parser")
-    
+            
+            
+        else:
+            logger.error("Page don't response! Code is = %s" % resp.status_code)
+        # logger.info('Found chapter(s): %s' % len(chapters_list))
     data = soup.prettify()
     handle = codecs.open('temp.html', "w", 'utf-8')
     handle.write(str(data))
